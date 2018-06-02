@@ -90,3 +90,102 @@ For comparison, here are the report results for the Talos community rules as of 
    1 !72.5.190.0/24
    1 !70.42.29.0/27
   </code></pre>
+
+Focusing on Destination addresses, free Emerging Threat Rules (as of 6/1/2018) reports the following destinations being addressed by the most rules.
+
+<pre><code>
+$ python ruleanalyzer.py "rules/emerging-all.rules" --report destination | sort | uniq -c | sort -r | head -25
+5279 $EXTERNAL_NET
+5108 $HTTP_SERVERS
+4603 $HOME_NET
+1596 any
+ 202 $SQL_SERVERS
+  30 $SMTP_SERVERS
+   3 $DNS_SERVERS
+   2 !255.255.255.255
+   1 85.93.0.0/24
+   1 82.163.143.135
+   1 82.163.142.137
+   1 31.184.192.0/24
+   1 31.184.192.0/19
+   1 224.0.0.2
+   1 209.139.208.0/23
+   1 195.22.26.192/26
+   1 194.165.16.0/24
+   1 11.11.11.11
+   1 1.1.1.0
+   1 $TELNET_SERVERS
+   1 $AIM_SERVERS
+   1 !8.28.150.0/24
+   1 !78.108.112.0/20
+   1 !72.5.190.0/24
+   1 !70.42.29.0/27
+</code></pre>
+
+If we drill down to Destination Ports we get the following:
+
+<pre><code>
+$ python ruleanalyzer.py "rules/emerging-all.rules" --report destination_port | sort | uniq -c | sort -r | head -25
+9629 any
+4280 $HTTP_PORTS
+1414 53
+ 248 445
+ 248 139
+ 172 $ORACLE_PORTS
+  87 25
+  60 443
+  59 111
+  56 1024:
+  51 21
+  45 1024:65535
+  43 587
+  35 23
+  30 2323
+  28 5060
+  19 161
+  19 143
+  17 1433
+  17 135
+  16 6893
+  16 6892
+  16 3306
+  14 8080
+  14 80
+</code></pre>
+
+Finally, if you are specifically interested in the rules associated with port 6892 as indicated above, you can run the following command which will print out the associated rule:
+
+<pre><code>
+$ python ruleanalyzer.py "rules/emerging-all.rules" --report destination_port --criteria 6892 
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (1)"; dsize:13<>32; content:"0"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023612; rev:4; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (2)"; dsize:13<>32; content:"1"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023613; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (3)"; dsize:13<>32; content:"2"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023614; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (4)"; dsize:13<>32; content:"3"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023615; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (5)"; dsize:13<>32; content:"4"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023616; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (6)"; dsize:13<>32; content:"5"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023617; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (7)"; dsize:13<>32; content:"6"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023618; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (8)"; dsize:13<>32; content:"7"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023619; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (9)"; dsize:13<>32; content:"8"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023620; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (10)"; dsize:13<>32; content:"9"; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023621; rev:4; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (11)"; dsize:13<>32; content:"a"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023622; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (12)"; dsize:13<>32; content:"b"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023623; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (13)"; dsize:13<>32; content:"c"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023624; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (14)"; dsize:13<>32; content:"d"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023625; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (15)"; dsize:13<>32; content:"e"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023626; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+
+6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (16)"; dsize:13<>32; content:"f"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023627; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
+</code></pre>
