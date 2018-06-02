@@ -61,35 +61,6 @@ For comparison, here are the report results for the Talos community rules as of 
    3 alert tcp $EXTERNAL_NET 1025: -> $HOME_NET any 
    2 alert udp $EXTERNAL_NET any -> $HOME_NET [500,848,4500,4848]
    </code></pre>
-  
-  <pre><code>
-  $ python ruleanalyzer.py "rules/emerging-all.rules" --report destination | sort | uniq -c | sort -r | head -25
-5279 $EXTERNAL_NET
-5108 $HTTP_SERVERS
-4603 $HOME_NET
-1596 any
- 202 $SQL_SERVERS
-  30 $SMTP_SERVERS
-   3 $DNS_SERVERS
-   2 !255.255.255.255
-   1 85.93.0.0/24
-   1 82.163.143.135
-   1 82.163.142.137
-   1 31.184.192.0/24
-   1 31.184.192.0/19
-   1 224.0.0.2
-   1 209.139.208.0/23
-   1 195.22.26.192/26
-   1 194.165.16.0/24
-   1 11.11.11.11
-   1 1.1.1.0
-   1 $TELNET_SERVERS
-   1 $AIM_SERVERS
-   1 !8.28.150.0/24
-   1 !78.108.112.0/20
-   1 !72.5.190.0/24
-   1 !70.42.29.0/27
-  </code></pre>
 
 Focusing on Destination addresses, free Emerging Threat Rules (as of 6/1/2018) reports the following destinations being addressed by the most rules.
 
