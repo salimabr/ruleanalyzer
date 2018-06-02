@@ -189,3 +189,34 @@ $ python ruleanalyzer.py "rules/emerging-all.rules" --report destination_port --
 
 6892: alert udp $HOME_NET any -> $EXTERNAL_NET [6892,6893] (msg:"ET TROJAN Ransomware/Cerber Checkin M3 (16)"; dsize:13<>32; content:"f"; nocase; depth:1; pcre:"/^[a-f0-9]{13,30}$/Ri"; threshold: type both, track by_src, count 1, seconds 60; metadata: former_category TROJAN; reference:md5,42c677d6d8f42acd8736c4b8c75ce505; reference:md5,7f6290c02465625828cfce6a8014c34a; reference:md5,d8b2d2a5f6da2872e147011d2ea85d71; classtype:trojan-activity; sid:2023627; rev:3; metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint, deployment Perimeter, tag Ransomware_Cerber, signature_severity Major, created_at 2016_12_12, malware_family Ransomware_Cerber, updated_at 2017_04_14;)
 </code></pre>
+
+If you wanted to know the most popular "content" options in all of your rules, run this:
+
+<pre><code>
+$ python ruleanalyzer.py "rules/emerging-all.rules" --report option | egrep "content:" | sort | uniq -c | sort -r | head -25
+1535 content:"GET"
+ 969 content:"POST"
+ 706 content:"SELECT"
+ 646 content:"|01 00 00 01 00 00 00 00 00 00|"
+ 640 content:!"Referer|3a|"
+ 480 content:"|00|"
+ 462 uricontent:"SELECT"
+ 438 content:"UNION"
+ 374 content:"DELETE"
+ 369 content:"INSERT"
+ 367 content:"UPDATE"
+ 351 content:"id="
+ 289 content:"GET "
+ 287 uricontent:"UNION"
+ 265 content:"|05|"
+ 251 content:"&|00|"
+ 248 content:!"Accept"
+ 212 uricontent:"INSERT"
+ 211 uricontent:"DELETE"
+ 210 uricontent:"UPDATE"
+ 199 content:"/index.php?"
+ 189 uricontent:"id="
+ 183 content:"FROM"
+ 165 content:"../"
+ 146 content:"|FF|SMB"
+</code></pre>
