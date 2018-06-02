@@ -93,10 +93,10 @@ while rule:
 		elif args.report == "option":
 			field_values = options.split("; ")
 			for field_value in field_values:
-				if args.criteria is not None and args.criteria in option:
-					print(option + ": " + rule)
+				if args.criteria is not None and args.criteria in field_value:
+					print(field_value + ": " + rule)
 				elif args.criteria is None:
-					print(option)
+					print(field_value)
 	rule = rules.readline()
 rules.close()
 
