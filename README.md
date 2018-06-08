@@ -191,3 +191,46 @@ $ python ruleanalyzer.py "rules/emerging-all.rules" --report option | egrep "con
  165 content:"../"
  146 content:"|FF|SMB"
 </code></pre>
+
+Emerging Threat signatures utilize a naming convention that starts the rule name with a specified Emerging Threat category.  The categories usually are at the beginning of the rule msg value in all capital letters.  By using the "etcat" report option, you can assess the rule categories with the most signatures and your overall overage.  See the following command and results example:
+
+<pre><code>
+$ python ruleanalyzer.py "rules/emerging-all.rules" --report etcat | sort | uniq -c | sort -r | more
+4707 ET TROJAN 
+4413 ET WEB_SPECIFIC_APPS 
+1942 ET CURRENT_EVENTS 
+ 483 ET MALWARE 
+ 361 ET POLICY 
+ 333 ET WEB_SERVER 
+ 318 ET EXPLOIT 
+ 241 ET INFO 
+ 240 ET USER_AGENTS 
+ 203 ET WEB_CLIENT 
+ 186 GPL SQL 
+ 175 ET SCAN 
+ 173 ET MOBILE_MALWARE 
+ 173 ET ACTIVEX 
+ 146 GPL NETBIOS SMB-DS 
+ 146 GPL NETBIOS SMB 
+ 111 ET TROJAN DNS 
+ 106 ET CURRENT_EVENTS DRIVEBY 
+ 105 ET POLICY DNS 
+  83 ET 
+  74 GPL RPC 
+  74 ET CURRENT_EVENTS DNS 
+  60 ET INFO DYNAMIC_DNS HTTP 
+  58 ET INFO DYNAMIC_DNS 
+  55 ET CURRENT_EVENTS SUSPICIOUS 
+  53 ET DOS 
+  48 ET SHELLCODE 
+  43 ET ATTACK_RESPONSE 
+  41 ET DNS 
+  36 ET INFO HTTP 
+  33 ET WEB_SERVER PHP 
+  33 ET CHAT 
+  32 GPL EXPLOIT 
+  32 ET WEB_SPECIFIC_APPS PHP 
+  31 ET NETBIOS 
+  28 ET TROJAN US-CERT 
+  28 ET POLICY HTTP 
+</code></pre>
