@@ -97,6 +97,13 @@ while rule:
 					print(field_value + ": " + rule)
 				elif args.criteria is None:
 					print(field_value)
+		elif args.report == "etcat":
+			field_values = options.split("; ")
+			for field_value in field_values:
+				if field_value.startswith("msg:"):
+					etcat = re.sub("msg:", "", field_value)
+					etcat = re.match(r"\"([A-Z\-\_\s+]+\s)", etcat)
+					print(etcat[1])
 	rule = rules.readline()
 rules.close()
 
