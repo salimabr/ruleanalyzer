@@ -234,3 +234,5 @@ $ python ruleanalyzer.py "rules/emerging-all.rules" --report etcat | sort | uniq
   28 ET TROJAN US-CERT 
   28 ET POLICY HTTP 
 </code></pre>
+
+This indicates a high focus on Trojans and Web-related indicators.
