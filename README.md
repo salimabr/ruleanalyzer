@@ -235,4 +235,4 @@ $ python ruleanalyzer.py "rules/emerging-all.rules" --report etcat | sort | uniq
   28 ET POLICY HTTP 
 </code></pre>
 
-This indicates the Emerging Threat rules as of 6/1/18 focused on Trojans and Web-related indicators.  The goal for analysts is to review their rule sets to make sure the coverage meets their specific requirements while not introducing rules that may generate a large number of time-consuming false positives.
+This indicates the Emerging Threat rules as of 6/1/18 focused on Trojans and Web-related indicators.  The goal for analysts is to review their rule sets to make sure the coverage meets their specific requirements and is relevant to the position of the sensor on the network while not introducing rules that may generate a large number of time-consuming false positives.  
